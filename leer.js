@@ -1,12 +1,15 @@
 var http = require("http");
 var fs = require("fs");
 http.createServer(function(req,res){
-    fs.readFile("./index.html",(err,html) =>{
+    fs.readFile("./index.html",(err,html) => {
         var html_string = html.toString();
-        var nombre = "Pdro"
+        var nombre = "Juan"
+        
         var variables  = html_string.match(/[^\{\}]+(?=\})/g); //{fasdf}
-        //var value = eval(variables[0]); 
-        html_string = html_string.replace("{" + variables[0] + "}", nombre);
+        for(var i=0 ; i<variables.length; i++){
+            var value = eval(variables[i]); 
+            html_string = html_string.replace("{" + variables[i] + "}", value);
+        }
 
         res.writeHead(200, { 'Content-Type': 'text/html'});
         res.write(html_string)
